@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.env
+
+# Local caches and IDE files
+.idea/
+.ruff_cache/
+
+# Checkpoints and data artifacts
+checkpoints/
+*.parquet
+*.pt
+*.txt
+*.model
+*.vocab
