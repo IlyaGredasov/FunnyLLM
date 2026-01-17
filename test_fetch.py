@@ -2,9 +2,10 @@ import argparse
 import asyncio
 import os
 
+from tqdm import tqdm
+
 from utils.extract import extract_anecdotes, get_raw_pages
 from utils.fetch import build_and_save_parquet, load_dataset_parquet
-from tqdm import tqdm
 
 
 async def run(pages: int, output: str, delay_s: float) -> None:

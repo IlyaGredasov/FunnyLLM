@@ -7,7 +7,9 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 
-def build_dataset(anecdotes: Iterable[str], existing: Iterable[str] | None = None) -> pa.Table:
+def build_dataset(
+    anecdotes: Iterable[str], existing: Iterable[str] | None = None
+) -> pa.Table:
     unique: list[str] = []
     seen: set[str] = set()
 

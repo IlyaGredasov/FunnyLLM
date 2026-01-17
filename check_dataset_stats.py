@@ -7,9 +7,15 @@ from tqdm import tqdm
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data", default="anecdotes.parquet", help="Path to parquet dataset")
-    parser.add_argument("--model", required=True, help="Path to SentencePiece model file (.model)")
-    parser.add_argument("--nbins", type=int, default=10, help="Number of bins for length distribution")
+    parser.add_argument(
+        "--data", default="anecdotes.parquet", help="Path to parquet dataset"
+    )
+    parser.add_argument(
+        "--model", required=True, help="Path to SentencePiece model file (.model)"
+    )
+    parser.add_argument(
+        "--nbins", type=int, default=10, help="Number of bins for length distribution"
+    )
     args = parser.parse_args()
 
     if args.nbins <= 0:

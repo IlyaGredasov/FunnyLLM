@@ -10,11 +10,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-async def get_raw_pages(n: int, url: str = os.getenv("DEFAULT_URL"), timeout_s: int = 10) -> List[str]:
+async def get_raw_pages(
+    n: int, url: str = os.getenv("DEFAULT_URL"), timeout_s: int = 10
+) -> List[str]:
     if n <= 0:
         return []
 
-    async with httpx.AsyncClient(timeout=timeout_s, headers={"User-Agent": "FunnyLLM/1.0"}) as client:
+    async with httpx.AsyncClient(
+        timeout=timeout_s, headers={"User-Agent": "FunnyLLM/1.0"}
+    ) as client:
         tasks = [client.get(url) for _ in range(n)]
         responses = await asyncio.gather(*tasks)
 

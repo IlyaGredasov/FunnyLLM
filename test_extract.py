@@ -1,5 +1,4 @@
-from utils.extract import extract_anecdotes
-from utils.extract import get_raw_pages
+from utils.extract import extract_anecdotes, get_raw_pages
 
 
 async def main():

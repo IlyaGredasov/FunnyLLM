@@ -38,8 +38,15 @@ class TransformerBlock(nn.Module):
 
 
 class FunnyLLM(nn.Module):
-    def __init__(self, vocab_size: int, max_seq_len: int = 512, d_model: int = 384, n_heads: int = 6, n_layers: int = 6,
-                 dropout: float = 0.1) -> None:
+    def __init__(
+        self,
+        vocab_size: int,
+        max_seq_len: int = 512,
+        d_model: int = 384,
+        n_heads: int = 6,
+        n_layers: int = 6,
+        dropout: float = 0.1,
+    ) -> None:
         super().__init__()
         self.vocab_size = vocab_size
         self.max_seq_len = max_seq_len
@@ -50,13 +57,16 @@ class FunnyLLM(nn.Module):
         self.token_embedding = nn.Embedding(vocab_size, d_model)
         self.pos_embedding = nn.Embedding(max_seq_len, d_model)
         self.drop = nn.Dropout(dropout)
-        self.blocks = nn.ModuleList([TransformerBlock(d_model, n_heads, dropout) for _ in range(n_layers)])
+        self.blocks = nn.ModuleList(
+            [TransformerBlock(d_model, n_heads, dropout) for _ in range(n_layers)]
+        )
         self.layer_norm_f = nn.LayerNorm(d_model)
         self.head = nn.Linear(d_model, vocab_size, bias=False)
 
-    def forward(self, input_ids: torch.Tensor, targets: torch.Tensor | None = None) -> tuple[
-        torch.Tensor, torch.Tensor | None]:
-        bsz, seq_len = input_ids.shape
+    def forward(
+        self, input_ids: torch.Tensor, targets: torch.Tensor | None = None
+    ) -> tuple[torch.Tensor, torch.Tensor | None]:
+        _, seq_len = input_ids.shape
         if seq_len > self.max_seq_len:
             raise ValueError("input length exceeds max_seq_len")
 
@@ -74,15 +84,23 @@ class FunnyLLM(nn.Module):
 
         loss = None
         if targets is not None:
-            loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), )
+            loss = F.cross_entropy(
+                logits.view(-1, logits.size(-1)),
+                targets.view(-1),
+            )
         return logits, loss
 
     @torch.no_grad()
-    def generate(self, input_ids: torch.Tensor, max_new_tokens: int, temperature: float = 1.0,
-                 top_k: int | None = None) -> torch.Tensor:
+    def generate(
+        self,
+        input_ids: torch.Tensor,
+        max_new_tokens: int,
+        temperature: float = 1.0,
+        top_k: int | None = None,
+    ) -> torch.Tensor:
         for _ in range(max_new_tokens):
             if input_ids.size(1) > self.max_seq_len:
-                input_ids = input_ids[:, -self.max_seq_len:]
+                input_ids = input_ids[:, -self.max_seq_len :]
             logits, _ = self(input_ids)
             logits = logits[:, -1, :] / max(temperature, 1e-6)
             if top_k is not None:

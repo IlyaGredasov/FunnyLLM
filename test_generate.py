@@ -25,7 +25,9 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ckpt", required=True, help="Path to checkpoint .pt file")
     parser.add_argument("--tokenizer", default=str(DEFAULT_TOKENIZER_MODEL))
-    parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
+    parser.add_argument(
+        "--device", default="cuda" if torch.cuda.is_available() else "cpu"
+    )
     args = parser.parse_args()
 
     checkpoint = torch.load(args.ckpt, map_location=args.device)
